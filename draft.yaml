@@ -1,0 +1,96 @@
+models:
+  Clinic:
+    owner_id: id foreign:users.id
+    status: enum:pending,active,banned
+    name: string:40
+    address: string:100
+    about: string:400 nullable
+    languages: string:80
+    location: string:120
+    country: string:60
+    relationships:
+        hasMany: Treatment, Comment, Badge
+        belongsTo: User
+
+  Treatment:
+    name: string:60
+    icon: string:40
+    desc: longtext
+    duration: string:40
+    procedure: longtext
+    accommodation: string:60
+    transport: string:60
+    extra: string:60
+    assistance: enum:true,false
+    guidance: longtext
+    doctors: string:120
+    relationships:
+        hasMany: Doctor
+        belongsTo: Clinic
+
+  Doctor:
+    name: string:100
+    profession: string:100
+    relationships:
+        belongsTo: Clinic
+
+  Badge:
+    name: string:60
+    icon: string:60
+    desc: string:120
+
+  Hotel:
+    name: string:80
+    desc: longtext
+    country: string:60
+    city: string:60
+    services: string:60
+    relationships:
+        hasMany: Feature
+
+  Feature:
+    name: string:60
+    desc: string:120
+    relationships:
+        belongsTo: Hotel
+
+  Page:
+    title: string:120
+    content: longtext
+    tags: string:120
+    relationships:
+        morphToMany: Tag
+
+  Tag:
+    title: string:120
+    taggable_id: id foreign:pages.id
+    taggable_type: string:40
+
+  Comment:
+    owner_id: id foreign:users.id
+    comment: longtext
+    star: smallInteger nullable
+    vote: enum:positive,negative
+    relationships:
+        belongsTo: Clinic
+
+controllers:
+  Clinic:
+    resource: api
+  Treatment:
+    resource: api
+  Hotel:
+    resource: api
+  Services:
+    resource: api
+  Page:
+    resource: api
+  Tag:
+    resource: api
+  Doctor:
+    resource: api
+  Badge:
+    resource: api
+  Comment:
+    resource: api
+    send: CommentNotification to:clinic.author with:comment
