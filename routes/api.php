@@ -37,3 +37,22 @@ Route::group(['middleware' => 'guest:api'], function () {
     Route::post('oauth/{driver}', 'Auth\OAuthController@redirectToProvider');
     Route::get('oauth/{driver}/callback', 'Auth\OAuthController@handleProviderCallback')->name('oauth.callback');
 });
+
+
+Route::apiResource('clinic', 'ClinicController');
+
+Route::apiResource('treatment', 'TreatmentController');
+
+Route::apiResource('hotel', 'HotelController');
+
+Route::apiResource('feature', 'FeatureController');
+
+Route::apiResource('page', 'PageController');
+
+Route::apiResource('tag', 'TagController');
+
+Route::apiResource('doctor', 'DoctorController');
+
+Route::apiResource('badge', 'BadgeController');
+
+Route::apiResource('comment', 'CommentController');

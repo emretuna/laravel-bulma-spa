@@ -1,3 +1,105 @@
+created:
+    - database/migrations/2020_05_27_123915_create_clinics_table.php
+    - database/migrations/2020_05_27_123916_create_treatments_table.php
+    - database/migrations/2020_05_27_123917_create_doctors_table.php
+    - database/migrations/2020_05_27_123918_create_badges_table.php
+    - database/migrations/2020_05_27_123919_create_hotels_table.php
+    - database/migrations/2020_05_27_123920_create_features_table.php
+    - database/migrations/2020_05_27_123921_create_pages_table.php
+    - database/migrations/2020_05_27_123922_create_tags_table.php
+    - database/migrations/2020_05_27_123923_create_comments_table.php
+    - app/Clinic.php
+    - app/Treatment.php
+    - app/Doctor.php
+    - app/Badge.php
+    - app/Hotel.php
+    - app/Feature.php
+    - app/Page.php
+    - app/Tag.php
+    - app/Comment.php
+    - database/factories/ClinicFactory.php
+    - database/factories/TreatmentFactory.php
+    - database/factories/DoctorFactory.php
+    - database/factories/BadgeFactory.php
+    - database/factories/HotelFactory.php
+    - database/factories/FeatureFactory.php
+    - database/factories/PageFactory.php
+    - database/factories/TagFactory.php
+    - database/factories/CommentFactory.php
+    - database/seeds/ClinicSeeder.php
+    - database/seeds/TreatmentSeeder.php
+    - database/seeds/HotelSeeder.php
+    - database/seeds/FeatureSeeder.php
+    - database/seeds/PageSeeder.php
+    - database/seeds/TagSeeder.php
+    - database/seeds/DoctorSeeder.php
+    - database/seeds/BadgeSeeder.php
+    - database/seeds/CommentSeeder.php
+    - app/Http/Controllers/ClinicController.php
+    - app/Http/Controllers/TreatmentController.php
+    - app/Http/Controllers/HotelController.php
+    - app/Http/Controllers/FeatureController.php
+    - app/Http/Controllers/PageController.php
+    - app/Http/Controllers/TagController.php
+    - app/Http/Controllers/DoctorController.php
+    - app/Http/Controllers/BadgeController.php
+    - app/Http/Controllers/CommentController.php
+    - app/Http/Requests/ClinicStoreRequest.php
+    - app/Http/Requests/ClinicUpdateRequest.php
+    - app/Http/Requests/TreatmentStoreRequest.php
+    - app/Http/Requests/TreatmentUpdateRequest.php
+    - app/Http/Requests/HotelStoreRequest.php
+    - app/Http/Requests/HotelUpdateRequest.php
+    - app/Http/Requests/FeatureStoreRequest.php
+    - app/Http/Requests/FeatureUpdateRequest.php
+    - app/Http/Requests/PageStoreRequest.php
+    - app/Http/Requests/PageUpdateRequest.php
+    - app/Http/Requests/TagStoreRequest.php
+    - app/Http/Requests/TagUpdateRequest.php
+    - app/Http/Requests/DoctorStoreRequest.php
+    - app/Http/Requests/DoctorUpdateRequest.php
+    - app/Http/Requests/BadgeStoreRequest.php
+    - app/Http/Requests/BadgeUpdateRequest.php
+    - app/Http/Requests/CommentStoreRequest.php
+    - app/Http/Requests/CommentUpdateRequest.php
+    - app/Http/Resources/ClinicCollection.php
+    - app/Http/Resources/Clinic.php
+    - app/Http/Resources/TreatmentCollection.php
+    - app/Http/Resources/Treatment.php
+    - app/Http/Resources/HotelCollection.php
+    - app/Http/Resources/Hotel.php
+    - app/Http/Resources/FeatureCollection.php
+    - app/Http/Resources/Feature.php
+    - app/Http/Resources/PageCollection.php
+    - app/Http/Resources/Page.php
+    - app/Http/Resources/TagCollection.php
+    - app/Http/Resources/Tag.php
+    - app/Http/Resources/DoctorCollection.php
+    - app/Http/Resources/Doctor.php
+    - app/Http/Resources/BadgeCollection.php
+    - app/Http/Resources/Badge.php
+    - app/Http/Resources/CommentCollection.php
+    - app/Http/Resources/Comment.php
+    - tests/Feature/Http/Controllers/ClinicControllerTest.php
+    - tests/Feature/Http/Controllers/TreatmentControllerTest.php
+    - tests/Feature/Http/Controllers/HotelControllerTest.php
+    - tests/Feature/Http/Controllers/FeatureControllerTest.php
+    - tests/Feature/Http/Controllers/PageControllerTest.php
+    - tests/Feature/Http/Controllers/TagControllerTest.php
+    - tests/Feature/Http/Controllers/DoctorControllerTest.php
+    - tests/Feature/Http/Controllers/BadgeControllerTest.php
+    - tests/Feature/Http/Controllers/CommentControllerTest.php
+updated:
+    - routes/api.php
 models:
     OAuthProvider: { user_id: 'biginteger unsigned', provider: string, provider_user_id: string, access_token: 'string nullable', refresh_token: 'string nullable' }
     User: { name: string, email: string, email_verified_at: 'datetime nullable', password: 'string nullable', remember_token: 'string:100 nullable' }
+    Clinic: { owner_id: 'id foreign:users.id', status: 'enum:pending, active, banned', name: 'string:40', address: 'string:100', about: 'string:400 nullable', languages: 'string:80', location: 'string:120', country: 'string:60', relationships: { hasMany: 'Treatment, Comment, Badge', belongsTo: User } }
+    Treatment: { name: 'string:60', icon: 'string:40', desc: longtext, duration: 'string:40', procedure: longtext, accommodation: 'string:60', transport: 'string:60', extra: 'string:60', assistance: 'enum:true,false', guidance: longtext, doctors: 'string:120', relationships: { hasMany: Doctor, belongsTo: Clinic } }
+    Doctor: { name: 'string:100', profession: 'string:100', relationships: { belongsTo: Clinic } }
+    Badge: { name: 'string:60', icon: 'string:60', desc: 'string:120' }
+    Hotel: { name: 'string:80', desc: longtext, country: 'string:60', city: 'string:60', features: 'string:60', relationships: { hasMany: Feature } }
+    Feature: { name: 'string:60', desc: 'string:120', relationships: { belongsTo: Hotel } }
+    Page: { title: 'string:120', content: longtext, tags: 'string:120', relationships: { hasMany: Tag } }
+    Tag: { title: 'string:120', taggable_id: 'id foreign:pages.id', taggable_type: 'string:40' }
+    Comment: { owner_id: 'id foreign:users.id', comment: longtext, star: 'smallInteger nullable', vote: 'enum:positive,negative', relationships: { belongsTo: Clinic } }
